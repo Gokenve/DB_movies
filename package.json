@@ -1,0 +1,23 @@
+{
+  "name": "proyecto_node_js:",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:nodemon": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "populate:movies": "node ./utils/seeds/movies.seeds.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2"
+  }
+}
