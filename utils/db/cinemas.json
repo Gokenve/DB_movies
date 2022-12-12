@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Royalty Cinemas",
+    "location": "Madrid",
+    "movies": []
+  },
+  {
+    "name": "Cinetesa",
+    "location": "Madrid",
+    "movies": []
+  },
+  {
+    "name": "Multi Cines Palace",
+    "location": "Alcorcón",
+    "movies": []
+  },
+  {
+    "name": "Capitales",
+    "location": "Pozuelo",
+    "movies": []
+  },
+  {
+    "name": "Cines Park",
+    "location": "Alcobendas",
+    "movies": []
+  }
+]

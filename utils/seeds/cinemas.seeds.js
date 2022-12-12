@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
-const Movie = require('../../models/Movies.js');
+const Cinema = require('../../models/Cinemas.js');
 
 const DB_URL = "mongodb+srv://root:nUH69ghJtacKMnmp@bd-movies.0y5sh78.mongodb.net/?retryWrites=true&w=majority";
 
@@ -9,21 +9,21 @@ mongoose.connect(DB_URL, {
     useUnifiedTopology: true
 }).then(async() => {
 
-    const movies = await Movie.find();
+    const cinemas = await Cinema.find();
 
-    if (movies.length) {
-        await Movie.collection.drop();
+    if (cinemas.length) {
+        await Cinema.collection.drop();
     }
 }).catch (err => {
     console.log(`Ha habido un error eliminando los datos: ${err}`);
 })
 .then(async() => {
-    const data= fs.readFileSync('./utils/db/movies.json');
+    const data= fs.readFileSync('./utils/db/cinemas.json');
     const parsedData = JSON.parse(data);
-    const movieDocs = parsedData.map((movie) => {
-    return new Movie(movie);
+    const cinemaDocs = parsedData.map((cinema) => {
+    return new Cinema(cinema);
     });
-    await Movie.insertMany(movieDocs);
+    await Cinema.insertMany(cinemaDocs);
 })
 .catch((err) => {
     console.log(`Ha habido un error al añadir el documento a la colección ${err}`)
