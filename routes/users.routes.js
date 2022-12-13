@@ -35,16 +35,18 @@ userRouter.post("/login", (req, res, next) => {
   passport.authenticate("login", done)(req);
 });
 
-userRouter.post("/logout", (req, res, next) => {
+//? Creating endpoint to logout users.
+userRouter.post('/logout', (req, res, next) => {
   if (req.user) {
-      req.logOut(() => {
-          req.session.destroy(() => {
-              res.clearCookie('connect.sid');
-              return res.status(200).json("Ha cerrado su sesión. Hasta pronto!");
-          });
-      });
+    req.logout(() => {
+      req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        return res.status(200).json('Hasta pronto!!');
+    });
+    });
   } else {
-      return res.status(304).json('No hay un usuario logueado en este momento');
+    //* Not sending message because whith error 304 it's not able to do it.
+    return res.status(304).json();
   }
 });
 

@@ -1,7 +1,8 @@
+//? Importing dependency and DB's url into de file connect.js.
 const mongoose = require('mongoose');
+const DB_URL = require ('./urlMongoDB');
 
-const DB_URL = "mongodb+srv://root:nUH69ghJtacKMnmp@bd-movies.0y5sh78.mongodb.net/?retryWrites=true&w=majority";
-
+//? Connectint with Mongo DB.
 const connect = () => {
     mongoose.connect(DB_URL, {
         useNewUrlParser: true,

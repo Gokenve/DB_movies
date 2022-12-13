@@ -1,13 +1,17 @@
-//? Importation of dependency and functions into movi.routes file.
+//? Importation of dependencies, schema, functions, middlewares and library to convert images in base64's image into movi.routes file.
 const express = require("express");
-//const { find } = require("../models/Movies.js");
 const Movie = require("../models/Movies.js");
 const createError = require("../utils/errors/create-error.js");
+const isAuthenticated = require('../utils/middlewares/auth.middleware.js');
+const upload = require('../utils/middlewares/file.middleware.js');
+const imageToUri = require("image-to-uri");
+const fs = require("fs")
+
 
 //? initializing movies router.
 const moviesRouter = express.Router();
 
-//? Creation of endpoint to get all movies from the DB.
+//? Creation of endpoint to find all movies from the collection movies.
 moviesRouter.get("/", async (req, res, next) => {
   try {
     const movies = await Movie.find();
@@ -17,7 +21,7 @@ moviesRouter.get("/", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to get movie by title from the DB.
+//? Creation of endpoint to find movie by title from the collection movies.
 moviesRouter.get("/title/:title", async (req, res, next) => {
   const title = req.params.title;
   try {
@@ -37,7 +41,7 @@ moviesRouter.get("/title/:title", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to get movie by genere from the DB.
+//? Creation of endpoint to find movie by genre from the collection movies.
 moviesRouter.get("/genre/:genre", async (req, res, next) => {
   const genre = req.params.genre;
   try {
@@ -56,7 +60,7 @@ moviesRouter.get("/genre/:genre", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to get movies premier from any year from the DB.
+//? Creation of endpoint to find movies premier from any year from the collection movies.
 moviesRouter.get("/year/:year", async (req, res, next) => {
   const year = req.params.year;
   const moviesFromYear = await Movie.find(
@@ -64,34 +68,30 @@ moviesRouter.get("/year/:year", async (req, res, next) => {
     { __v: 0 }
   ).sort({ year: 1 });
 
-  //*Varibles to hand errors when years don't exist in DB.
+  //*Varibles to hand errors when years don't exist in the collection movies.
   let yearsMovies = await Movie.find().sort({ year: -1 });
   const oldestMovie = yearsMovies[0];
   const youngestMovie = yearsMovies[yearsMovies.length - 1];
-
   try {
     if (year > oldestMovie.year || year < youngestMovie.year) {
       return next(
         createError(
-          `No existen películas estrenadas en el año ${year} en nuesta Base de datos.`,
+          `No existen películas estrenadas en el año ${year} en nuesta Base de datos. El año actual es ${new Date().getFullYear()}`,
           404
         )
       );
     }
-
     return res.status(200).json(moviesFromYear);
   } catch (err) {
     return next(err);
   }
 });
 
-//? Creation of endpoint to get movies by id from the DB.
+//? Creation of endpoint to find movies by id from the collection movies.
 moviesRouter.get("/:id", async (req, res, next) => {
   const id = req.params.id;
-
   try {
     const movie = await Movie.findById(id, { __v: 0 });
-
     if (movie === null) {
       return next(
         createError(
@@ -111,13 +111,13 @@ moviesRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to post movies in the DB.
-moviesRouter.post("/create_movie", async (req, res, next) => {
-  const newMovie = new Movie(...req.body);
-  const titleNewMovie = newMovie.title;
-  const createdMovie = await Movie.findOne({ title: titleNewMovie });
-
+//? Creation of endpoint to create movies that includes an image in the collection movies only if your're loged.
+/*moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated], async (req, res, next) => {
   try {
+    const picture = req.file ? req.file.filename : null;
+    const newMovie = new Movie({...req.body, picture});
+    const titleNewMovie = newMovie.title;
+    const createdMovie = await Movie.findOne({ title: titleNewMovie });
     if (createdMovie === null) {
       const newCreatedMovie = await newMovie.save();
       return res.status(201).json(newCreatedMovie);
@@ -128,26 +128,43 @@ moviesRouter.post("/create_movie", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});*/
+
+//? Creation of endpoint to create movies that includes an image in base64's image into the collection movies only if your're loged.
+moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated], async (req, res, next) => {
+  try {
+    const filePath = req.file ? req.file.path : null;
+    const picture = imageToUri(filePath);  
+    const newMovie = new Movie({...req.body, picture});
+    const titleNewMovie = newMovie.title;
+    const createdMovie = await Movie.findOne({ title: titleNewMovie });
+    if (createdMovie === null) {
+      const newCreatedMovie = await newMovie.save();
+      await fs.unlinkSync(filePath);
+      return res.status(201).json(newCreatedMovie);
+    } else if (newMovie.title === createdMovie.title)
+      return next(
+        createError("Esa película ya existe en nuestra base de datos", 200)
+      );
+  } catch (err) {
+    next(err);
+  }
 });
 
-//? Creation of endpoint to put movies in the DB by id.
-moviesRouter.put("/actualizar/:id", async (req, res, next) => {
+//? Creation of endpoint to update movies in the collection movis by id if you're loged.
+moviesRouter.put("/actualizar/:id", [isAuthenticated], async (req, res, next) => {
   const id = req.params.id;
   try {
-    //const createdMovie = await Movie.findById(id);
-    //console.log(createdMovie);
     const modifiedMovie = new Movie(...req.body);
     modifiedMovie._id = id;
-    console.log(id, modifiedMovie._id);
     const movieUpdated = await Movie.findByIdAndUpdate(
       id,
       { $set: { ...modifiedMovie } },
       { new: true }
     );
     const createdMovies = await Movie.findById(id);
-    console.log(createdMovies);
     if (createdMovies) {
-      res.status(200).json(movieUpdated);
+      return res.status(200).json(movieUpdated);
     }
     return next(
       createError(
@@ -156,12 +173,12 @@ moviesRouter.put("/actualizar/:id", async (req, res, next) => {
       )
     );
   } catch (err) {
-    return err;
+    return next(err);
   }
 });
 
-//? Creation of endpoint to delete movies in the DB by id.
-moviesRouter.delete("/delete/:id", async (req, res, next) => {
+//? Creation of endpoint to delete movies in the collection movis by id if you're loged.
+moviesRouter.delete("/delete/:id", [isAuthenticated], async (req, res, next) => {
   try {
     const id = req.params.id;
     const deletedMovie = await Movie.findByIdAndDelete(id);

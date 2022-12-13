@@ -25,10 +25,11 @@ const moviesSchema = new mongoose.Schema(
       'Aventuras',
       "Musical",
       'Infantil'
-    ]}
+    ]},
+    picture: String
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
