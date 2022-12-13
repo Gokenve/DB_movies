@@ -12,7 +12,6 @@ const cinemasRouter = express.Router();
 cinemasRouter.get("/", async (req, res, next) => {
   try {
     const cinemas = await Cinema.find({}, { __v: 0 }).populate('movies');
-    console.log(cinemas);
     return res.status(200).json(cinemas);
   } catch (err) {
     return next(err);
@@ -42,8 +41,6 @@ cinemasRouter.get("/movie/:movie", async (req, res, next) => {
     const movie = req.params.movie;
     const movieChoosen = await Movie.find({title: movie});
     const cinemas = await Cinema.find({ movies:{$in:movieChoosen}}).populate('movies');
-    console.log(movieChoosen);
-    console.log(cinemas);
     if (movieChoosen) {
       return next(createError('El cine con esa película no se encuentra en nuestra base de datos'));
     }
@@ -74,12 +71,11 @@ cinemasRouter.get("/:id", async (req, res, next) => {
 });
 
 //? Creation of endpoint to create cinema in the collection cinemas only if you're loged.
-//! Manejar error cuando crea cines ya existentes en la BD.
 cinemasRouter.post('/create_cinema', [isAuthenticated], async (req, res, next) => {
   try {
       const newCinema = new Cinema( ...req.body);
-      const createdCinemas = await Cinema.find({title: {$in:cinemaToCreate}})
-      if (newCinema === createdCinemas && createdCinemas) {
+      const createdCinemas = await Cinema.findOne({name: {$in:newCinema.name}, location: {$in:newCinema.location}})
+      if (newCinema.name === createdCinemas.name && newCinema.location === createdCinemas.location) {
         return next(createError('Ese cine ya existe en nuestra base de datos', 200));
       }
       const NewCreatedCinema = await (newCinema.save()); 
@@ -90,7 +86,6 @@ cinemasRouter.post('/create_cinema', [isAuthenticated], async (req, res, next) =
 });
 
 //? Creation of endpoint to update cinemas in the collection cinemas by id if you're loged.
-//? Ver como se debe hacer desde postman.com
 cinemasRouter.put('/actualizar/:id', [isAuthenticated], async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -119,7 +114,7 @@ cinemasRouter.delete('/delete/:id', [isAuthenticated], async (req, res, next) =>
     if (!deletedCinema) {
       return next(createError(`El cine con el id ${id} no está en nuestra base de datos.`))
     }
-    return res.status(200).json(`El cine ${deletedCinema.name} ha sido eliminado correctamente`);
+    return res.status(200).json(`El cine ${deletedCinema.name} de ${deletedCinema.location} ha sido eliminado correctamente`);
   }catch (err) {
     next(err);
   }

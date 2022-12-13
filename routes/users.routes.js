@@ -1,9 +1,11 @@
+//? Importation of dependencies to create sessions in users routes.
 const express = require("express");
 const passport = require("passport");
 
+//? initializing users router.
 const userRouter = express.Router();
 
-//? Creating endpoint to register users.
+//? Creating endpoint to register users in collection users into the DB.
 userRouter.post("/register", (req, res, next) => {
   const done = (err, user) => {
     if (err) {
@@ -19,7 +21,7 @@ userRouter.post("/register", (req, res, next) => {
   passport.authenticate("register", done)(req);
 });
 
-//? Creating endpoint to login users.
+//? Creating endpoint to login users in collection sessions into the DB.
 userRouter.post("/login", (req, res, next) => {
   const done = (err, user) => {
     if (err) {
@@ -35,7 +37,7 @@ userRouter.post("/login", (req, res, next) => {
   passport.authenticate("login", done)(req);
 });
 
-//? Creating endpoint to logout users.
+//? Creating endpoint to logout users in collection sessions in the DB.
 userRouter.post('/logout', (req, res, next) => {
   if (req.user) {
     req.logout(() => {

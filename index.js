@@ -1,3 +1,6 @@
+//? Executing dependency to protect the environment Variables.
+require("dotenv").config();
+
 //? Importing dependencies,functions and DB's url into de index.js.
 //* I will use passport to authenticate.
 const express = require("express");
@@ -18,7 +21,7 @@ const DB_URL = require ('./utils/db/urlMongoDB');
 //? Connecting to the DB.
 connect();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 4000;
 
 //? Initialazing server and cors.
 const server = express();
@@ -33,11 +36,11 @@ server.use(express.urlencoded({ extended: false }));
 //? Createing route for static files. Images in this case.
 server.use(express.static(path.join(__dirname, 'public')));
 
-//? Executeing passport function. Creation of sessions handler and keeping them into DB. Initialazing passport and sessions handler.
+//? Executing passport function. Creation of sessions handler and keeping them into DB. Initialazing passport and sessions handler.
 require("./utils/authentication/passport.js");
 server.use(
   session({
-    secret: "73@mad#LP",
+    secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1800000 },

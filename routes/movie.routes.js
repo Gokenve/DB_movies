@@ -60,7 +60,7 @@ moviesRouter.get("/genre/:genre", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to find movies premier from any year from the collection movies.
+//? Creation of endpoint to find movies premiers from any year from the collection movies.
 moviesRouter.get("/year/:year", async (req, res, next) => {
   const year = req.params.year;
   const moviesFromYear = await Movie.find(
@@ -111,25 +111,6 @@ moviesRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-//? Creation of endpoint to create movies that includes an image in the collection movies only if your're loged.
-/*moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated], async (req, res, next) => {
-  try {
-    const picture = req.file ? req.file.filename : null;
-    const newMovie = new Movie({...req.body, picture});
-    const titleNewMovie = newMovie.title;
-    const createdMovie = await Movie.findOne({ title: titleNewMovie });
-    if (createdMovie === null) {
-      const newCreatedMovie = await newMovie.save();
-      return res.status(201).json(newCreatedMovie);
-    } else if (newMovie.title === createdMovie.title)
-      return next(
-        createError("Esa película ya existe en nuestra base de datos", 200)
-      );
-  } catch (err) {
-    next(err);
-  }
-});*/
-
 //? Creation of endpoint to create movies that includes an image in base64's image into the collection movies only if your're loged.
 moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated], async (req, res, next) => {
   try {
@@ -151,7 +132,7 @@ moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated],
   }
 });
 
-//? Creation of endpoint to update movies in the collection movis by id if you're loged.
+//? Creation of endpoint to update movies in the collection movies by id if you're loged.
 moviesRouter.put("/actualizar/:id", [isAuthenticated], async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -177,7 +158,7 @@ moviesRouter.put("/actualizar/:id", [isAuthenticated], async (req, res, next) =>
   }
 });
 
-//? Creation of endpoint to delete movies in the collection movis by id if you're loged.
+//? Creation of endpoint to delete movies in the collection movies by id if you're loged.
 moviesRouter.delete("/delete/:id", [isAuthenticated], async (req, res, next) => {
   try {
     const id = req.params.id;

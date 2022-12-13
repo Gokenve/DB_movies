@@ -1,2 +1,2 @@
-const DB_URL = "mongodb+srv://root:nUH69ghJtacKMnmp@bd-movies.0y5sh78.mongodb.net/?retryWrites=true&w=majority";
+const DB_URL = process.env.DB_URL;
 module.exports = DB_URL;
