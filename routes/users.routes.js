@@ -2,6 +2,8 @@
 const express = require("express");
 const passport = require("passport");
 const User = require("../models/Users");
+const isAuthenticated = require('../utils/middlewares/auth.middleware.js');
+
 
 //? initializing users router.
 const userRouter = express.Router();
@@ -53,7 +55,7 @@ userRouter.post('/logout', (req, res, next) => {
   }
 });
 
-cinemasRouter.delete('/delete/:user', [isAuthenticated], async (req, res, next) => {
+userRouter.delete('/delete/:user', [isAuthenticated], async (req, res, next) => {
   try {
     const user = req.params.user;
     const deletedUser = await User.findOneAndDelete(user);
