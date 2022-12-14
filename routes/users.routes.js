@@ -57,12 +57,8 @@ userRouter.post('/logout', (req, res, next) => {
 
 userRouter.delete('/delete', [isAuthenticated], async (req, res, next) => {
   try {
-    //const user = req.params.user;
     const user = req.user;
     const deletedUser = await User.findOneAndDelete(user);
-    /*if (!deletedUser) {
-      return next(createError(`El usuario ${user} no está en nuestra base de datos. Compruebe de nuevo el nombre del usuario`));
-    }*/
     req.logout(() => {
       req.session.destroy(() => {
         res.clearCookie('connect.sid');
