@@ -1,3 +1,4 @@
+//? Creating cinemas seed's middleware to populate the DB.
 const mongoose = require('mongoose');
 const fs = require('fs');
 const Cinema = require('../../models/Cinemas.js');

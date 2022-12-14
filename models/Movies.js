@@ -1,8 +1,6 @@
-//Cambiar el schemma por los requeridos en el proyecto 1 de películas
-
+//? Creating movies eschema.
 const mongoose = require("mongoose");
 
-//? Creating movies eschema.
 const moviesSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, unique: true }, 

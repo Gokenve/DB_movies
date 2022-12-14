@@ -1,5 +1,4 @@
-
-
+//? Creating errors handler for proyect.
 const createError = (msg, status) => {
     const error = new Error(msg);
     error.status = status;

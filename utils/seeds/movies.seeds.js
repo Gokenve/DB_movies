@@ -1,3 +1,4 @@
+//? Creating movies seed's middleware to populate the DB.
 const mongoose = require('mongoose');
 const fs = require('fs');
 const Movie = require('../../models/Movies.js');

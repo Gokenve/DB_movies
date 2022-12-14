@@ -1,3 +1,4 @@
+//? Creating cinemas schema.
 const mongoose = require("mongoose");
 
 const cinemasSchema = new mongoose.Schema(
