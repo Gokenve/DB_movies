@@ -123,7 +123,7 @@ moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated],
       const newCreatedMovie = await newMovie.save();
       await fs.unlinkSync(filePath);
       return res.status(201).json(newCreatedMovie);
-    } else if (newMovie.title === createdMovie.title)
+    } else if (newMovie.title === createdMovie.title && newMovie.director === createdMovie.director)
       return next(
         createError("Esa película ya existe en nuestra base de datos", 200)
       );
