@@ -55,17 +55,18 @@ userRouter.post('/logout', (req, res, next) => {
   }
 });
 
-userRouter.delete('/delete/:user', [isAuthenticated], async (req, res, next) => {
+userRouter.delete('/delete', [isAuthenticated], async (req, res, next) => {
   try {
-    const user = req.params.user;
+    //const user = req.params.user;
+    const user = req.user;
     const deletedUser = await User.findOneAndDelete(user);
-    if (!deletedUser) {
+    /*if (!deletedUser) {
       return next(createError(`El usuario ${user} no está en nuestra base de datos. Compruebe de nuevo el nombre del usuario`));
-    }
+    }*/
     req.logout(() => {
       req.session.destroy(() => {
         res.clearCookie('connect.sid');
-        return res.status(200).json(`El usuario ${user} ha sido eliminado. Hasta pronto!!`);
+        return res.status(200).json(`El usuario ${deletedUser.email} ha sido eliminado. Hasta pronto!!`);
     });
     });
   }catch (err) {
