@@ -1,4 +1,4 @@
 /node_modules
 .env
-movies.seeds.js
-cinemas.seeds.js
+/movies.seeds.js
+/cinemas.seeds.js

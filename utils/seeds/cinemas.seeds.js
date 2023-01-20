@@ -2,8 +2,7 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 const Cinema = require('../../models/Cinemas.js');
-
-const DB_URL = "mongodb+srv://root:nUH69ghJtacKMnmp@bd-movies.0y5sh78.mongodb.net/?retryWrites=true&w=majority";
+const DB_URL = require ('./urlMongoDB');
 
 mongoose.connect(DB_URL, {
     useNewUrlParser: true,

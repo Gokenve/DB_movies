@@ -133,7 +133,7 @@ moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated],
 });
 
 //? Creation of endpoint to update movies in the collection movies by id if you're loged.
-moviesRouter.put("/actualizar/:id", [isAuthenticated], async (req, res, next) => {
+moviesRouter.put("/update/:id", [isAuthenticated], async (req, res, next) => {
   const id = req.params.id;
   try {
     const modifiedMovie = new Movie(...req.body);

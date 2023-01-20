@@ -86,7 +86,7 @@ cinemasRouter.post('/create_cinema', [isAuthenticated], async (req, res, next) =
 });
 
 //? Creation of endpoint to update cinemas in the collection cinemas by id if you're loged.
-cinemasRouter.put('/actualizar/:id', [isAuthenticated], async (req, res, next) => {
+cinemasRouter.put('/update/:id', [isAuthenticated], async (req, res, next) => {
   try {
     const id = req.params.id;
     const modifiedCinema = new Cinema({ ...req.body });

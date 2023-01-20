@@ -50,7 +50,7 @@ userRouter.post('/logout', (req, res, next) => {
     });
     });
   } else {
-    //* Not sending message because whith error 304 it's not able to do it.
+    //* Not sending message because with error 304 it's not able to do it.
     return res.status(304).json();
   }
 });
