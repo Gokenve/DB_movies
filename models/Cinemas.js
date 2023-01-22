@@ -5,7 +5,12 @@ const cinemasSchema = new mongoose.Schema(
   {
     name: { type: String, required: true}, 
     location: { type: String, required: true},
-    movies: [{ type: mongoose.Types.ObjectId, ref: 'Movie' }]
+    movies: [{ type: mongoose.Types.ObjectId, ref: 'Movie' }],
+    contact: 
+    {
+      email: { type: String, unique: true},
+      phone: { type: Number }
+    }
   },
   {
     timestamps: true

@@ -10,8 +10,8 @@ const moviesSchema = new mongoose.Schema(
       'Acción',
       'Animación',
       'Drama',
+      'Bélica',
       'Comedia',
-      'Comedia romántica',
       'Comedia romántica',
       'Comedia costumbrista',
       'Comedia apocalíptica',
@@ -24,6 +24,13 @@ const moviesSchema = new mongoose.Schema(
       "Musical",
       'Infantil'
     ]},
+    data_sheet: 
+    {
+      producers: [{ type: String }],
+      script: [{ type: String }],
+      duration: { type: String },
+    },
+    synopsis: { type: String },
     picture: String
   },
   {
