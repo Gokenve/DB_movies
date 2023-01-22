@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 
 const cinemasSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true}, 
+    name: { type: String, required: true},
+    website: { type: String }, 
     location: { type: String, required: true},
     movies: [{ type: mongoose.Types.ObjectId, ref: 'Movie' }],
     contact: 
