@@ -5,7 +5,7 @@ const moviesSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, unique: true }, 
     director: { type: String, required: true },
-    cast: [{ type: String}]
+    cast: [{ type: String}],
     year: { type: Number, min: [1896, 'En ese año aun no se había inventado el cine'] },
     genre: { type: String, enum:[
       'Acción',
