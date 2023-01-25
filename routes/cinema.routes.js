@@ -73,13 +73,14 @@ cinemasRouter.get("/:id", async (req, res, next) => {
 //? Creation of endpoint to create cinema in the collection cinemas only if you're loged.
 cinemasRouter.post('/create_cinema', [isAuthenticated], async (req, res, next) => {
   try {
-      const newCinema = new Cinema( ...req.body);
-      const createdCinemas = await Cinema.findOne({name: {$in:newCinema.name}, location: {$in:newCinema.location}})
-      if (newCinema.name === createdCinemas.name && newCinema.location === createdCinemas.location) {
+      const newCinema = new Cinema( {...req.body} );
+      const createdCinemas = await Cinema.findOne({name: newCinema.name, location: newCinema.location})
+      if (createdCinemas) {
         return next(createError('Ese cine ya existe en nuestra base de datos', 200));
+      } else {
+        const NewCreatedCinema = await (newCinema.save());
+        return res.status(201).json(NewCreatedCinema);  
       }
-      const NewCreatedCinema = await (newCinema.save()); 
-      return res.status(201).json(NewCreatedCinema); 
   } catch (err) {
   next(err);
   }

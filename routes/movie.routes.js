@@ -136,7 +136,7 @@ moviesRouter.post("/create_movie", [upload.single('picture')],[isAuthenticated],
 moviesRouter.put("/update/:id", [isAuthenticated], async (req, res, next) => {
   const id = req.params.id;
   try {
-    const modifiedMovie = new Movie(...req.body);
+    const modifiedMovie = new Movie({...req.body});
     modifiedMovie._id = id;
     const movieUpdated = await Movie.findByIdAndUpdate(
       id,

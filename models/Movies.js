@@ -7,7 +7,7 @@ const moviesSchema = new mongoose.Schema(
     director: { type: String, required: true },
     cast: [{ type: String}],
     year: { type: Number, min: [1896, 'En ese año aun no se había inventado el cine'] },
-    genre: { type: String, enum:[
+    genre: [{ type: String, enum:[
       'Acción',
       'Animación',
       'Drama',
@@ -21,10 +21,11 @@ const moviesSchema = new mongoose.Schema(
       'Suspense',
       'Policiaca',
       'Fantasía',
+      'Ciencia Ficción',
       'Aventuras',
       "Musical",
       'Infantil'
-    ]},
+    ]}],
     data_sheet: 
     {
       producers: [{ type: String }],
