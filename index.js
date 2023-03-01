@@ -23,7 +23,7 @@ connect();
 
 const PORT = process.env.PORT || 4000;
 
-const whitlist = ['http://localhost:3000', 'http://localhost:4200/'];
+const whitlist = ['http://localhost:3000', 'http://localhost:4200'];
 const corsOptions = {
   credentials: true,
   origin: function(origin, callback) {
