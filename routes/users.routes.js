@@ -40,6 +40,11 @@ userRouter.post("/login", (req, res, next) => {
   passport.authenticate("login", done)(req);
 });
 
+//? Creating endpoint to check if user's session is on
+userRouter.get('/me', [isAuthenticated], (req, res, next) =>{
+  return res.status(200).json(req.user);
+});
+
 //? Creating endpoint to logout users in collection sessions in the DB.
 userRouter.post('/logout', (req, res, next) => {
   if (req.user) {

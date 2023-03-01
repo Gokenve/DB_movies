@@ -21,9 +21,9 @@ const moviesSchema = new mongoose.Schema(
       'Suspense',
       'Policiaca',
       'Fantasía',
-      'Ciencia Ficción',
+      'Romantica',
       'Aventuras',
-      "Musical",
+      'Musical',
       'Infantil'
     ]}],
     data_sheet: 

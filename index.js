@@ -23,9 +23,21 @@ connect();
 
 const PORT = process.env.PORT || 4000;
 
+const whitlist = ['http://localhost:3000', 'http://localhost:4200/'];
+const corsOptions = {
+  credentials: true,
+  origin: function(origin, callback) {
+    if (whitlist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+};
+
 //? Initialazing server and cors.
 const server = express();
-server.use(cors());
+server.use(cors(corsOptions));
 
 //? Parseing POST/PUt bodies that came as JSON.
 server.use(express.json());
